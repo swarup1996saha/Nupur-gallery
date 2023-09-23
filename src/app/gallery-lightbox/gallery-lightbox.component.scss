@@ -101,7 +101,7 @@
     }
     .lightbox-img img{
       border-radius: .35rem;
-      width: 100%;
+      width: 40%;
     }
   }
 }
@@ -111,6 +111,11 @@
       column-count: 2;
       width: 100%;
       .gallery-img img{
+        width: 100%;
+      }
+    }
+    .lightbox{
+      .lightbox-img img{
         width: 100%;
       }
     }
@@ -124,6 +129,11 @@
         max-width: 100%;
       }
     }
+    .lightbox{
+      .lightbox-img img{
+        width: 100%;
+      }
+    }
   }
 }
 @media screen and (max-width: 650px){
@@ -131,6 +141,11 @@
     .gallery{
       column-count: 1;
       .gallery-img img{
+        width: 100%;
+      }
+    }
+    .lightbox{
+      .lightbox-img img{
         width: 100%;
       }
     }
