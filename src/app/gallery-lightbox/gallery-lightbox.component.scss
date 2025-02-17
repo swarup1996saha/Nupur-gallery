@@ -493,3 +493,32 @@
     columns: 2 140px;
   }
 }
+
+.share-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.share-btn {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+
+  &:hover {
+    background: #128C7E;
+  }
+
+  i {
+    font-size: 20px;
+  }
+}

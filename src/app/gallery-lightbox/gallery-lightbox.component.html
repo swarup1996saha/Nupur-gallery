@@ -11,7 +11,11 @@
 
   <div class="gallery" 
        [class.masonry-layout]="viewMode === 'masonry'"
-       [@staggerAnimation]="filteredGalleryData.length">
+       [@staggerAnimation]="filteredGalleryData.length"
+       infiniteScroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="50"
+       (scrolled)="onScroll()">
     <div *ngFor="let data of filteredGalleryData; let i = index" 
          class="gallery-img"
          [class.loading]="!data.loaded"
@@ -26,13 +30,6 @@
       </div>
       <div class="loading-spinner" *ngIf="!data.loaded">
         <div class="spinner"></div>
-      </div>
-      <div class="image-actions">      
-        <div class="share-buttons">
-          <button (click)="shareImage(data, 'whatsapp')">
-            <i class="fab fa-whatsapp"></i>
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -72,6 +69,9 @@
       </button>
       <button (click)="downloadImage(); $event.stopPropagation()" class="zoom-btn">
         <i class="fas fa-download"></i>
+      </button>
+      <button (click)="shareOnWhatsApp(); $event.stopPropagation()" class="zoom-btn">
+        <i class="fab fa-whatsapp"></i>
       </button>
     </div>
   </div>

@@ -75,6 +75,9 @@ export class GalleryLightboxComponent implements OnInit {
   touchStartX: number = 0;
   touchMoveX: number = 0;
   minSwipeDistance: number = 50;
+  private page = 1;
+  private itemsPerPage = 12;
+  private loadedImages: Set<string> = new Set(); // Add this property
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -96,10 +99,11 @@ export class GalleryLightboxComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    // Initialize with all images
     this.totalImageCount = this.galleryData.length;
     this.galleryData = this.galleryData.map(item => ({
       ...item,
-      loaded: false
+      loaded: this.loadedImages.has(item.imageSrc)
     }));
     
     // Extract unique categories
@@ -107,65 +111,111 @@ export class GalleryLightboxComponent implements OnInit {
     this.filterImages('all');
   }
 
+  onScroll() {
+    // Get all images for current category
+    const categoryImages = this.selectedCategory === 'all'
+      ? this.galleryData
+      : this.galleryData.filter(item => item.category === this.selectedCategory);
+
+    const start = this.page * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    
+    // Only proceed if there are more images to load
+    if (start < categoryImages.length) {
+      const nextImages = categoryImages
+        .slice(start, end)
+        .map(item => ({
+          ...item,
+          loaded: this.loadedImages.has(item.imageSrc)
+        }));
+      
+      if (nextImages.length > 0) {
+        this.filteredGalleryData = [...this.filteredGalleryData, ...nextImages];
+        this.page++;
+      }
+    }
+  }
+
   filterImages(category: string): void {
     this.selectedCategory = category;
-    let filtered = category === 'all' 
+    this.page = 1; // Reset pagination
+    
+    // Get all images for the selected category
+    const filteredImages = category === 'all' 
       ? this.galleryData 
       : this.galleryData.filter(item => item.category === category);
     
-    // Apply sorting
-    filtered = this.sortImages(filtered);
+    // Update total count for the category
+    this.totalImageCount = filteredImages.length;
     
-    this.filteredGalleryData = filtered;
-  }
-  
-  sortImages(images: Item[]): Item[] {
-    return images.sort((a, b) => {
-      switch(this.sortBy) {
-        case 'date':
-          return (b.dateAdded?.getTime() || 0) - (a.dateAdded?.getTime() || 0);
-        case 'name':
-          return a.imageAlt.localeCompare(b.imageAlt);
-        case 'likes':
-          return (b.likes || 0) - (a.likes || 0);
-        default:
-          return 0;
-      }
-    });
-  }
-  
-  toggleFavorite(image: Item, event: Event): void {
-    event.stopPropagation();
-    image.isFavorite = !image.isFavorite;
-    image.likes = (image.likes || 0) + (image.isFavorite ? 1 : -1);
-  }
-  
-  shareImage(image: Item, platform: 'facebook' | 'twitter' | 'whatsapp'): void {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(`Check out this image: ${image.description || image.imageAlt}`);
+    // Always load itemsPerPage images or all available if less
+    const initialBatch = filteredImages.slice(0, this.itemsPerPage);
     
-    switch(platform) {
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
-        break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
-        break;
-      case 'whatsapp':
-        window.open(`https://wa.me/?text=${text} ${url}`);
-        break;
-    }
+    // Reset filtered gallery data with initial batch
+    this.filteredGalleryData = initialBatch.map(item => ({
+      ...item,
+      loaded: this.loadedImages.has(item.imageSrc)
+    }));
   }
 
   onPreviewImage(index: number): void {
     this.showMask = true;
     this.previewImage = true;
-    this.currentIndex = index;
-    this.currentLightboxImage = this.galleryData[index];
+    
+    // Find the actual index in the full gallery data
+    const currentImage = this.filteredGalleryData[index];
+    const fullDataIndex = this.galleryData.findIndex(item => 
+      item.imageSrc === currentImage.imageSrc && 
+      item.category === currentImage.category
+    );
+    
+    this.currentIndex = fullDataIndex;
+    this.currentLightboxImage = this.galleryData[fullDataIndex];
+  }
+
+  prev(): void {
+    let newIndex = this.currentIndex;
+    do {
+      newIndex = (newIndex - 1 + this.galleryData.length) % this.galleryData.length;
+    } while (
+      this.selectedCategory !== 'all' && 
+      this.galleryData[newIndex].category !== this.selectedCategory
+    );
+    
+    this.currentIndex = newIndex;
+    this.currentLightboxImage = this.galleryData[this.currentIndex];
+  }
+
+  next(): void {
+    let newIndex = this.currentIndex;
+    do {
+      newIndex = (newIndex + 1) % this.galleryData.length;
+    } while (
+      this.selectedCategory !== 'all' && 
+      this.galleryData[newIndex].category !== this.selectedCategory
+    );
+    
+    this.currentIndex = newIndex;
+    this.currentLightboxImage = this.galleryData[this.currentIndex];
+  }
+
+  shareOnWhatsApp() {
+    const currentImage = this.galleryData[this.currentIndex];
+    const text = `Check out this image: ${window.location.origin}${currentImage.imageSrc}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
   }
 
   onImageLoad(index: number): void {
-    this.galleryData[index].loaded = true;
+    const image = this.filteredGalleryData[index];
+    this.loadedImages.add(image.imageSrc);
+    // Update loaded state in both filtered and main gallery data
+    image.loaded = true;
+    
+    const mainIndex = this.galleryData.findIndex(item => item.imageSrc === image.imageSrc);
+    if (mainIndex !== -1) {
+      this.galleryData[mainIndex].loaded = true;
+    }
   }
 
   onAnimationEnd(e: AnimationEvent) {
@@ -179,19 +229,6 @@ export class GalleryLightboxComponent implements OnInit {
       event.stopPropagation();
     }
     this.previewImage = false;
-  }
-
-  prev(): void {
-    this.currentIndex = (this.currentIndex + 1) % this.galleryData.length;
-    this.currentLightboxImage = this.galleryData[this.currentIndex];
-  }
-
-  next(): void {
-    this.currentIndex = this.currentIndex - 1;
-    if (this.currentIndex < 0) {
-      this.currentIndex = this.galleryData.length - 1;
-    }
-    this.currentLightboxImage = this.galleryData[this.currentIndex];
   }
 
   zoomIn() {
