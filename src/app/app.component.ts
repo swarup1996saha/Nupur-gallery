@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 interface Item{
   imageSrc: string;
-  imageAlt: string
+  imageAlt: string;
+  category: string;
 }
 @Component({
   selector: 'app-root',
@@ -14,142 +15,177 @@ export class AppComponent {
   data: Item[] = [
     {
       imageSrc: '../assets/images/1.jpg',
-      imageAlt: '1'
+      imageAlt: '1',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/2.jpg',
-      imageAlt: '2'
+      imageAlt: '2',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/3.jpg',
-      imageAlt: '3'
+      imageAlt: '3',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/4.jpg',
-      imageAlt: '4'
+      imageAlt: '4',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/5.jpg',
-      imageAlt: '5'
+      imageAlt: '5',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/6.jpg',
-      imageAlt: '6'
+      imageAlt: '6',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/7.jpg',
-      imageAlt: '7'
+      imageAlt: '7',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/8.jpg',
-      imageAlt: '8'
+      imageAlt: '8',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/9.jpg',
-      imageAlt: '9'
+      imageAlt: '9',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/10.jpg',
-      imageAlt: '10'
+      imageAlt: '10',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/11.jpg',
-      imageAlt: '11'
+      imageAlt: '11',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/12.jpg',
-      imageAlt: '12'
+      imageAlt: '12',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/13.jpg',
-      imageAlt: '13'
+      imageAlt: '13',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/14.jpg',
-      imageAlt: '14'
+      imageAlt: '14',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/15.jpg',
-      imageAlt: '15'
+      imageAlt: '15',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/16.jpg',
-      imageAlt: '16'
+      imageAlt: '16',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/17.jpg',
-      imageAlt: '17'
+      imageAlt: '17',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/18.jpg',
-      imageAlt: '18'
+      imageAlt: '18',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/19.jpg',
-      imageAlt: '19'
+      imageAlt: '19',
+      category: 'Me'
     },{
       imageSrc: '../assets/images/20.jpg',
-      imageAlt: '20'
+      imageAlt: '20',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/21.jpg',
-      imageAlt: '21'
+      imageAlt: '21',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/22.jpg',
-      imageAlt: '22'
+      imageAlt: '22',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/23.jpg',
-      imageAlt: '23'
+      imageAlt: '23',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/24.jpg',
-      imageAlt: '24'
+      imageAlt: '24',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/25.jpg',
-      imageAlt: '25'
+      imageAlt: '25',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/26.jpg',
-      imageAlt: '26'
+      imageAlt: '26',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/27.jpg',
-      imageAlt: '27'
+      imageAlt: '27',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/28.jpg',
-      imageAlt: '28'
+      imageAlt: '28',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/29.jpg',
-      imageAlt: '29'
+      imageAlt: '29',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/30.jpg',
-      imageAlt: '30'
+      imageAlt: '30',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/31.jpg',
-      imageAlt: '31'
+      imageAlt: '31',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/32.jpg',
-      imageAlt: '32'
+      imageAlt: '32',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/33.jpg',
-      imageAlt: '33'
+      imageAlt: '33',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/34.jpg',
-      imageAlt: '34'
+      imageAlt: '34',
+      category: 'Me'
     },
     {
       imageSrc: '../assets/images/35.jpg',
-      imageAlt: '35'
+      imageAlt: '35',
+      category: 'Me'
     },
 
   ]
